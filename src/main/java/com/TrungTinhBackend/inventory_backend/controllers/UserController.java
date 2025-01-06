@@ -4,6 +4,7 @@ import com.TrungTinhBackend.inventory_backend.dto.LoginRequest;
 import com.TrungTinhBackend.inventory_backend.dto.RegisterRequest;
 import com.TrungTinhBackend.inventory_backend.dto.Response;
 import com.TrungTinhBackend.inventory_backend.dto.UserDTO;
+import com.TrungTinhBackend.inventory_backend.models.User;
 import com.TrungTinhBackend.inventory_backend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,10 @@ public class UserController {
     @GetMapping("/transactions/{userId}")
     public ResponseEntity<Response> getUserAndTransactions(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getUserTransactions(userId));
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<User> getUserCurrent() {
+        return ResponseEntity.ok(userService.getCurrentLoggedInUser());
     }
 }
