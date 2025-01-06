@@ -9,7 +9,9 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TransactionFilter {
 
     public static Specification<Transaction> byFilter(String searchValue) {

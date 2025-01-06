@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -31,7 +32,7 @@ public class Product {
     private String sku;
 
     @Positive(message = "Product price must be a positive value")
-    private String price;
+    private BigDecimal price;
 
     @Min(value = 0,message = "Stock Quantity cannot be negative")
     private Integer stockQuantity;
