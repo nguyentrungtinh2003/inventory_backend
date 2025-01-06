@@ -2,7 +2,6 @@ package com.TrungTinhBackend.inventory_backend.controllers;
 
 import com.TrungTinhBackend.inventory_backend.dto.CategoryDTO;
 import com.TrungTinhBackend.inventory_backend.dto.Response;
-import com.TrungTinhBackend.inventory_backend.dto.UserDTO;
 import com.TrungTinhBackend.inventory_backend.services.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
