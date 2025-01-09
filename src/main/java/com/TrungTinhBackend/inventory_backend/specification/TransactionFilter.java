@@ -3,7 +3,6 @@ package com.TrungTinhBackend.inventory_backend.specification;
 import com.TrungTinhBackend.inventory_backend.models.Transaction;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.JoinType;
-import org.springframework.core.type.filter.AspectJTypeFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;

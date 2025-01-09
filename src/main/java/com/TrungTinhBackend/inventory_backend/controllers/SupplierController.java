@@ -5,16 +5,17 @@ import com.TrungTinhBackend.inventory_backend.dto.SupplierDTO;
 import com.TrungTinhBackend.inventory_backend.services.SupplierService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/suppliers")
-@RequiredArgsConstructor
 public class SupplierController {
 
-    private final SupplierService supplierService;
+    @Autowired
+    private SupplierService supplierService;
 
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('ADMIN')")

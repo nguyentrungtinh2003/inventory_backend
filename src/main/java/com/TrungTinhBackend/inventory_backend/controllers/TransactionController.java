@@ -1,22 +1,21 @@
 package com.TrungTinhBackend.inventory_backend.controllers;
 
 import com.TrungTinhBackend.inventory_backend.dto.Response;
-import com.TrungTinhBackend.inventory_backend.dto.SupplierDTO;
 import com.TrungTinhBackend.inventory_backend.dto.TransactionRequest;
 import com.TrungTinhBackend.inventory_backend.enums.TransactionStatus;
 import com.TrungTinhBackend.inventory_backend.services.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/transactions")
-@RequiredArgsConstructor
 public class TransactionController {
 
-    private final TransactionService transactionService;
+    @Autowired
+    private TransactionService transactionService;
 
     @PostMapping("/purchase")
     public ResponseEntity<Response> createPurchase(@RequestBody @Valid TransactionRequest transactionRequest) {

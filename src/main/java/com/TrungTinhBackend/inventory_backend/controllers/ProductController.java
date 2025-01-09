@@ -1,11 +1,11 @@
 package com.TrungTinhBackend.inventory_backend.controllers;
 
-import com.TrungTinhBackend.inventory_backend.dto.CategoryDTO;
 import com.TrungTinhBackend.inventory_backend.dto.ProductDTO;
 import com.TrungTinhBackend.inventory_backend.dto.Response;
 import com.TrungTinhBackend.inventory_backend.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/products")
-@RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductService productService;
+    @Autowired
+    private ProductService productService;
 
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('ADMIN')")

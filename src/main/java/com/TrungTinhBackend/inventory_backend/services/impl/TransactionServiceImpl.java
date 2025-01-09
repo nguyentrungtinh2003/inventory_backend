@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,16 +34,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionRepository transactionRepository;
-    private final ProductRepository productRepository;
-    private final SupplierRepository supplierRepository;
-    private final UserService userService;
-    private final TransactionFilter transactionFilter;
-    private final ModelMapper modelMapper;
+    @Autowired
+    private TransactionRepository transactionRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private SupplierRepository supplierRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Override
@@ -78,12 +82,13 @@ public class TransactionServiceImpl implements TransactionService {
 
         transactionRepository.save(transaction);
 
-        return Response.builder()
-                .status(200)
-                .message("Save purchase success !")
-                .data(transaction)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Save purchase success!");
+        response.setData(transaction);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -111,12 +116,13 @@ public class TransactionServiceImpl implements TransactionService {
 
         transactionRepository.save(transaction);
 
-        return Response.builder()
-                .status(200)
-                .message("Save sale success !")
-                .data(transaction)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Save sale success!");
+        response.setData(transaction);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
 
     }
 
@@ -153,12 +159,13 @@ public class TransactionServiceImpl implements TransactionService {
 
         transactionRepository.save(transaction);
 
-        return Response.builder()
-                .status(200)
-                .message("Return to supplier success !")
-                .data(transaction)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Return to supplier success!");
+        response.setData(transaction);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -177,12 +184,13 @@ public class TransactionServiceImpl implements TransactionService {
             transactionDTO.setProduct(null);
         });
 
-        return Response.builder()
-                .status(200)
-                .message("Get transaction by page success !")
-                .data(transactionDTOS)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get transaction by page success!");
+        response.setData(transactionDTOS);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -192,12 +200,13 @@ public class TransactionServiceImpl implements TransactionService {
         TransactionDTO transactionDTO = modelMapper.map(transaction,TransactionDTO.class);
         transactionDTO.setUser(null);
 
-        return Response.builder()
-                .status(200)
-                .message("Get transaction by id success !")
-                .data(transactionDTO)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get transaction by id success!");
+        response.setData(transactionDTO);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -212,12 +221,13 @@ public class TransactionServiceImpl implements TransactionService {
             transactionDTO.setProduct(null);
         });
 
-        return Response.builder()
-                .status(200)
-                .message("Get transaction by month ,year success !")
-                .data(transactionDTOS)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get transaction by month, year success!");
+        response.setData(transactionDTOS);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -229,11 +239,12 @@ public class TransactionServiceImpl implements TransactionService {
 
         transactionRepository.save(transaction);
 
-        return Response.builder()
-                .status(200)
-                .message("Update transaction success !")
-                .data(transaction)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Update transaction success!");
+        response.setData(transaction);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 }

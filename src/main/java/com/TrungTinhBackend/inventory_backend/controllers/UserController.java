@@ -1,23 +1,21 @@
 package com.TrungTinhBackend.inventory_backend.controllers;
 
-import com.TrungTinhBackend.inventory_backend.dto.LoginRequest;
-import com.TrungTinhBackend.inventory_backend.dto.RegisterRequest;
 import com.TrungTinhBackend.inventory_backend.dto.Response;
 import com.TrungTinhBackend.inventory_backend.dto.UserDTO;
 import com.TrungTinhBackend.inventory_backend.models.User;
 import com.TrungTinhBackend.inventory_backend.services.UserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
-@RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")

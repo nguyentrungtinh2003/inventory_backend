@@ -4,17 +4,17 @@ import com.TrungTinhBackend.inventory_backend.dto.CategoryDTO;
 import com.TrungTinhBackend.inventory_backend.dto.Response;
 import com.TrungTinhBackend.inventory_backend.services.CategoryService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/categories")
-@RequiredArgsConstructor
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    @Autowired
+    private CategoryService categoryService;
 
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('ADMIN')")

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,14 +23,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
-    private final JwtUtils jwtUtils;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private JwtUtils jwtUtils;
 
 
     @Override
@@ -47,12 +51,13 @@ public class UserServiceImpl implements UserService {
                 .build();
         userRepository.save(userToSave);
 
-        return Response.builder()
-                .status(200)
-                .message("User register success !")
-                .data(userToSave)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("User register success!");
+        response.setData(userToSave);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -64,15 +69,15 @@ public class UserServiceImpl implements UserService {
         }
         String token = jwtUtils.generateToken(user.getEmail());
 
-        return Response.builder()
-                .status(200)
-                .message("User login success !")
-                .token(token)
-                .data(user)
-                .role(user.getRole())
-                .expirationTime("6 months")
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("User login success!");
+        response.setData(user);
+        response.setToken(token);
+        response.setRole(user.getRole());
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -81,12 +86,13 @@ public class UserServiceImpl implements UserService {
         users.forEach(user -> user.setTransactions(null));
         List<UserDTO> userDTOS = modelMapper.map(users,new TypeToken<List<UserDTO>>() {}.getType());
 
-        return Response.builder()
-                .status(200)
-                .message("Get all user success !")
-                .data(userDTOS)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get all user success!");
+        response.setData(userDTOS);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -104,12 +110,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found "));
         UserDTO userDTO = modelMapper.map(user,UserDTO.class);
         userDTO.setTransactions(null);
-        return Response.builder()
-                .status(200)
-                .message("Get user by id success !")
-                .data(userDTO)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get user by id success!");
+        response.setData(userDTO);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -132,12 +139,13 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.save(user);
 
-        return Response.builder()
-                .status(200)
-                .message("Update user success !")
-                .data(user)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Update user success!");
+        response.setData(user);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -145,11 +153,12 @@ public class UserServiceImpl implements UserService {
         userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found "));
         userRepository.deleteById(id);
 
-        return Response.builder()
-                .status(200)
-                .message("Delete user success !")
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Delete user success!");
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -160,12 +169,13 @@ public class UserServiceImpl implements UserService {
             transactionDTO.setUser(null);
             transactionDTO.setSupplier(null);
         });
-        return Response.builder()
-                .status(200)
-                .message("Get transaction user success !")
-                .data(userDTO)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get transaction user success!");
+        response.setData(userDTO);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
 }

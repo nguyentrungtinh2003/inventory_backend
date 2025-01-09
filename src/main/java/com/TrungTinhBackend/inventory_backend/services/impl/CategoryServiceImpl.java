@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
@@ -29,12 +31,13 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = modelMapper.map(categoryDTO,Category.class);
         categoryRepository.save(category);
 
-        return Response.builder()
-                .status(200)
-                .message("Create category success !")
-                .data(category)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Create category success!");
+        response.setData(category);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -43,12 +46,13 @@ public class CategoryServiceImpl implements CategoryService {
         categories.forEach(category -> category.setProducts(null));
         List<CategoryDTO> categoryDTOS = modelMapper.map(categories,new TypeToken<CategoryDTO>() {}.getType());
 
-        return Response.builder()
-                .status(200)
-                .message("Get all category success !")
-                .data(categoryDTOS)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get all category success!");
+        response.setData(categoryDTOS);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -56,12 +60,13 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Category not found"));
         CategoryDTO categoryDTO = modelMapper.map(category,CategoryDTO.class);
 
-        return Response.builder()
-                .status(200)
-                .message("Get category by id success !")
-                .data(categoryDTO)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get category by id success!");
+        response.setData(categoryDTO);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -70,12 +75,13 @@ public class CategoryServiceImpl implements CategoryService {
         category.setName(categoryDTO.getName());
         categoryRepository.save(category);
 
-        return Response.builder()
-                .status(200)
-                .message("Update category success !")
-                .data(category)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Update category success!");
+        response.setData(category);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -83,11 +89,12 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Category not found"));
         categoryRepository.deleteById(id);
 
-        return Response.builder()
-                .status(200)
-                .message("Delete category success !")
-                .data(category)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Delete category success!");
+        response.setData(category);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 }

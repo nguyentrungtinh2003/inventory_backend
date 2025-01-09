@@ -4,25 +4,29 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
+@Service
 @Slf4j
-@RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
 
-    private final JwtUtils jwtUtils;
-    private final CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private JwtUtils jwtUtils;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -35,7 +39,7 @@ public class AuthFilter extends OncePerRequestFilter {
             String email = jwtUtils.getUsernameFromToken(token);
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
             if(StringUtils.hasText(email) && jwtUtils.isTokenValid(token,userDetails)) {
-                log.info("Valid token: {}",email);
+//                log.info("Valid token: {}",email);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,null,userDetails.getAuthorities()
                 );
@@ -46,7 +50,7 @@ public class AuthFilter extends OncePerRequestFilter {
         try{
             filterChain.doFilter(request,response);
         }catch(Exception e) {
-            log.error("Exception occurred in AuthFilter: " + e.getMessage());
+//            log.error("Exception occurred in AuthFilter: " + e.getMessage());
         }
     }
 

@@ -7,12 +7,12 @@ import com.TrungTinhBackend.inventory_backend.models.Category;
 import com.TrungTinhBackend.inventory_backend.models.Product;
 import com.TrungTinhBackend.inventory_backend.repositories.CategoryRepository;
 import com.TrungTinhBackend.inventory_backend.repositories.ProductRepository;
-import com.TrungTinhBackend.inventory_backend.services.CategoryService;
 import com.TrungTinhBackend.inventory_backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,13 +24,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
-    private final ModelMapper modelMapper;
-    private final CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     private static final String IMAGE_DIR = System.getProperty("user.dir") + "/product-img/";
 
@@ -56,12 +58,13 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.save(product);
 
-        return Response.builder()
-                .status(200)
-                .message("Create product success !")
-                .data(product)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Create product success!");
+        response.setData(product);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     private String saveImg(MultipartFile img) {
@@ -94,12 +97,13 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
         List<ProductDTO> productDTOS = modelMapper.map(products,new TypeToken<List<ProductDTO>>() {}.getType());
 
-        return Response.builder()
-                .status(200)
-                .message("Get all product success !")
-                .data(productDTOS)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get all product success!");
+        response.setData(productDTOS);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
 
@@ -107,12 +111,13 @@ public class ProductServiceImpl implements ProductService {
     public Response getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Product not found "));
 
-        return Response.builder()
-                .status(200)
-                .message("Get product by id success !")
-                .data(product)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Get product by id success!");
+        response.setData(product);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -137,7 +142,7 @@ if(productDTO.getName() != null && !productDTO.getName().isBlank()) {
         if(productDTO.getDescription() != null && !productDTO.getDescription().isEmpty()) {
             product.setDescription(productDTO.getDescription());
         }
-        if(productDTO.getPrice() != null && productDTO.getPrice().compareTo(String.valueOf(BigDecimal.ZERO)) >= 0) {
+        if(productDTO.getPrice() != null && productDTO.getPrice().compareTo(BigDecimal.ZERO) >= 0) {
             product.setPrice(productDTO.getPrice());
         }
         if(productDTO.getStockQuantity() != null && productDTO.getStockQuantity() >= 0) {
@@ -145,12 +150,13 @@ if(productDTO.getName() != null && !productDTO.getName().isBlank()) {
         }
         productRepository.save(product);
 
-        return Response.builder()
-                .status(200)
-                .message("Update product success !")
-                .data(product)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Update product success!");
+        response.setData(product);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -158,12 +164,13 @@ if(productDTO.getName() != null && !productDTO.getName().isBlank()) {
         Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Product not found "));
         productRepository.deleteById(id);
 
-        return Response.builder()
-                .status(200)
-                .message("Delete product success !")
-                .data(product)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Delete product success!");
+        response.setData(product);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 
     @Override
@@ -174,11 +181,12 @@ if(productDTO.getName() != null && !productDTO.getName().isBlank()) {
         }
         List<ProductDTO> productDTOS = modelMapper.map(products,new TypeToken<List<ProductDTO>>() {}.getType());
 
-        return Response.builder()
-                .status(200)
-                .message("Update product success !")
-                .data(productDTOS)
-                .timestamp(LocalDateTime.now())
-                .build();
+        Response response = new Response();
+        response.setStatus(200);
+        response.setMessage("Search product success!");
+        response.setData(productDTOS);
+        response.setTimestamp(LocalDateTime.now());
+
+        return response;
     }
 }

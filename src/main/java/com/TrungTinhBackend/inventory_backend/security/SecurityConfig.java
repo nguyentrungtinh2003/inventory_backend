@@ -4,6 +4,7 @@ import com.TrungTinhBackend.inventory_backend.exceptions.CustomAccessDenialHandl
 import com.TrungTinhBackend.inventory_backend.exceptions.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,13 +23,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
 
-    private final AuthFilter authFilter;
-    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
-    private final CustomAccessDenialHandler customAccessDenialHandler;
+    @Autowired
+    private AuthFilter authFilter;
+    @Autowired
+    private CustomAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private CustomAccessDenialHandler customAccessDenialHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
