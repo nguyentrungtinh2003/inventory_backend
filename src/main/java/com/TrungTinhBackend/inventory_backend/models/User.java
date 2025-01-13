@@ -43,7 +43,7 @@ public class User {
     private List<Transaction> transactions;
 
     @Column(name = "created_at")
-    private final LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt ;
 
     @Override
     public String toString() {

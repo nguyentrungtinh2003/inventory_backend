@@ -1,6 +1,7 @@
 package com.TrungTinhBackend.inventory_backend.dto;
 
 import com.TrungTinhBackend.inventory_backend.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,14 @@ import java.time.LocalDateTime;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response {
 
     private int status;
     private String message;
     private Object data;
+
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 
     private String token;

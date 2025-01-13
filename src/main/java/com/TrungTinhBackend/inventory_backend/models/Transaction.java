@@ -37,7 +37,7 @@ public class Transaction {
 
     private String note;
 
-    private final LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt ;
 
     private LocalDateTime updateAt;
 

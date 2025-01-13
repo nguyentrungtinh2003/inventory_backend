@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -47,6 +48,8 @@ public class UserServiceImpl implements UserService {
                 .name(registerRequest.getName())
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .phoneNumber(registerRequest.getPhoneNumber())
+                .createdAt(LocalDateTime.now())
                 .role(role)
                 .build();
         userRepository.save(userToSave);

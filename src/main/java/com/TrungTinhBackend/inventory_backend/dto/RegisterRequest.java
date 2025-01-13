@@ -19,6 +19,17 @@ public class RegisterRequest {
     @NotBlank(message = "Password is required")
     private String password;
 
+    @NotBlank(message = "Phone Number is required")
+    private String phoneNumber;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     private UserRole role;
 
     public String getName() {

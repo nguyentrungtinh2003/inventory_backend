@@ -42,7 +42,7 @@ public class Product {
 
     private String img;
 
-    private final LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt ;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
