@@ -7,6 +7,7 @@ import com.TrungTinhBackend.inventory_backend.models.Category;
 import com.TrungTinhBackend.inventory_backend.models.Product;
 import com.TrungTinhBackend.inventory_backend.repositories.CategoryRepository;
 import com.TrungTinhBackend.inventory_backend.repositories.ProductRepository;
+import com.TrungTinhBackend.inventory_backend.services.ImgService;
 import com.TrungTinhBackend.inventory_backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,11 +35,11 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper modelMapper;
     @Autowired
     private CategoryRepository categoryRepository;
-
-    private static final String IMAGE_DIR = System.getProperty("user.dir") + "/product-img/";
+    @Autowired
+    private ImgService imgService;
 
     @Override
-    public Response saveProduct(ProductDTO productDTO, MultipartFile img) {
+    public Response saveProduct(ProductDTO productDTO, MultipartFile img) throws IOException {
 
         Category category = categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(() -> new NotFoundException("Category not found"));
 
@@ -51,9 +53,7 @@ public class ProductServiceImpl implements ProductService {
                 .build();
 
         if (img != null && !img.isEmpty()) {
-            log.info("Img file exist");
-            String imgPath = saveImg(img);
-            product.setImg(imgPath);
+            product.setImg(imgService.uploadImg(img));
         }
 
         productRepository.save(product);
@@ -67,30 +67,6 @@ public class ProductServiceImpl implements ProductService {
         return response;
     }
 
-    private String saveImg(MultipartFile img) {
-        if(img.getContentType().startsWith("image/") || img.getSize() > 1024 * 1024 *1024) {
-            throw new IllegalArgumentException("Only img file under");
-        }
-
-        File directory = new File(IMAGE_DIR);
-        if(!directory.exists()) {
-            directory.mkdir();
-            log.info("Directory was created");
-        }
-
-        String uniqueFileName = UUID.randomUUID() + "_" + img.getOriginalFilename();
-
-        String imgPath = IMAGE_DIR + uniqueFileName;
-
-        try{
-            File destinationFile = new File(imgPath);
-            img.transferTo(destinationFile);
-        }catch(Exception e) {
-            throw new IllegalArgumentException("Error saving img");
-        }
-
-        return imgPath;
-    }
 
     @Override
     public Response getAllProduct() {
@@ -121,12 +97,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Response updateProduct(Long id, ProductDTO productDTO, MultipartFile img) {
+    public Response updateProduct(Long id, ProductDTO productDTO, MultipartFile img) throws IOException {
         Product product = productRepository.findById(productDTO.getProductId()).orElseThrow(() -> new NotFoundException("Product not found "));
 
 if(img != null && !img.isEmpty()) {
-    String imgPath = saveImg(img);
-    product.setImg(imgPath);
+    product.setImg(imgService.updateImg(product.getImg(),img));
 }
 if(productDTO.getCategoryId() != null && productDTO.getCategoryId() > 0) {
     Category category = categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(() -> new NotFoundException("Category not found "));
